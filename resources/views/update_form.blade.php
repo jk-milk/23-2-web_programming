@@ -27,9 +27,7 @@
           <label for="organization">소속:</label>
           <input type="organization" name="organization" value="MBC"/>
         </div>
-        <input type="submit" value="제출">
+        <input type="submit" value="수정">
       </form>
-
-
     </body>
 </html>

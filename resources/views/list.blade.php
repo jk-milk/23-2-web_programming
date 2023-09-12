@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>remove_form</title>
+        <title>list</title>
 
     </head>
     <body>

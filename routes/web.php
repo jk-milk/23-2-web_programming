@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -19,48 +21,16 @@ Route::get('/', function () {
 	return view('welcome');
 });
 
-Route::get('/test', function(){
-	return view('welcome');
-}); // 클로저
+Route::get('/test', [UserController::class, 'test']);
 
-Route::get('/register', function(){
-	return view('register_form');
-});
+Route::get('/register', [UserController::class, 'create']);
 
-Route::post('/register', function(Request $req){
-	// $email = $req->input("email"); $email = $req->email;
-	$name = $req->input("name");
-	$email = $req->input("email");
-	$birthDate = $req->input("birthDate");
-	$organization = $req->input("organization");
-	return view('register', ['name'=>$name, 'email'=>$email, 'birthDate'=>$birthDate, 'organization'=>$organization]);
-});
+Route::post('/register', [UserController::class, 'store']);
 
-Route::get('/update', function(){
-	return view('update_form');
-});
+Route::get('/update', [UserController::class, 'edit']);
 
-Route::put('/update', function(Request $req){
-	$name = $req->input("name");
-	$email = $req->input("email");
-	$birthDate = $req->input("birthDate");
-	$organization = $req->input("organization");
-	return view('update', ['name'=>$name, 'email'=>$email, 'birthDate'=>$birthDate, 'organization'=>$organization]);
-});
+Route::put('/update', [UserController::class, 'update']);
 
-Route::get('/remove', function(){
-	return view('remove_form');
-});
+Route::get('/players', [UserController::class, 'index']);
 
-Route::delete('/remove', function(Request $req){
-	$name = $req->input("name");
-	return view('remove', ['name'=>$name]);
-});
-
-Route::get('/user/{id?}', function(string $id = '100'){
-	return 'User '.$id;
-});
-
-Route::get('/posts/{post}/comments/{comment}', function(string $postId, string $commentId) {
-	return '게시글 '.$postId.'번 글의 댓글 '.$commentId.'번을 인출했습니다.';
-});
+Route::delete('/remove', [UserController::class, 'destroy']);
