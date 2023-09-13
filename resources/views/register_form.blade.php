@@ -8,7 +8,7 @@
 
     </head>
     <body>
-      <form action="/register" method="POST">
+      <form action="/users" method="POST">
         @csrf
         <div>
           <label for="name">이름:</label>

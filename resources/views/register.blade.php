@@ -12,7 +12,7 @@
       <h2>{{$name}}님의 등록 정보는 아래와 같습니다.</h2>
       <h3>이메일 : {{$email}}</h3>
       <h3>생년월일 : {{$birthDate}}</h3>
-      <h3>소속 : {{$organization}}</h3>
+      <h3>소속 : {{$org}}</h3>
 
     </body>
 </html>

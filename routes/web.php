@@ -1,9 +1,7 @@
 <?php
 
 use App\Http\Controllers\UserController;
-use App\Models\User;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 
 
 /*
@@ -18,19 +16,9 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/', function () {
-	return view('welcome');
+	return view('welcome', ['users'=>[]]);
 });
 
 Route::get('/test', [UserController::class, 'test']);
 
-Route::get('/register', [UserController::class, 'create']);
-
-Route::post('/register', [UserController::class, 'store']);
-
-Route::get('/update', [UserController::class, 'edit']);
-
-Route::put('/update', [UserController::class, 'update']);
-
-Route::get('/players', [UserController::class, 'index']);
-
-Route::delete('/remove', [UserController::class, 'destroy']);
+Route::resource('/users', UserController::class);
