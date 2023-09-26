@@ -12,11 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('flights', function (Blueprint $table) {
-            // int 타입의 auto_increment primary key id칼럼 생성.
+            // UnsignedBigInt 타입의 auto_increment primary key id칼럼 생성.
             $table->id();
+            $table->string('name');
+            $table->string('airline');
 
             // datetime 데이터 타입으로 created_at, updated_at 이라는 두 개의 칼럼을 만들어준다.
-            $table->timestamps();
+            $table->timestamps(); 
         });
     }
 
