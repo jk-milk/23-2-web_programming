@@ -26,7 +26,7 @@
     <form action="/posts/{{$post->id}}/edit" method="get" style="display:inline-block">
       <input type="submit" value="수정"/>
     </form>
-    <form action="" method="post" style="display:inline-block">
+    <form action="/posts/{{$post->id}}" method="post" style="display:inline-block" onsubmit="return confirm('Are you sure to delete?')">
       @csrf
       @method("delete")
       <input type="submit" value="삭제"/>

@@ -8,7 +8,7 @@
 
     </head>
     <body>
-      <h2>게시글 리스트</h2>
+      <h2>게시글 리스트 {{$count}}개</h2>
       <table>
         <tr>
           <th>연번</th>

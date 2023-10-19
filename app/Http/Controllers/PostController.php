@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
-
+;
 class PostController extends Controller
 {
     /**
@@ -14,12 +14,19 @@ class PostController extends Controller
     {
         // 리스트를 보여주는 기능을 수행
         // DB의 posts 테이블의 레코드들을 읽어온다.
-        $posts = Post::all(); // posts 모델의 모든 레코드를 읽어온다.
+        // $posts = Post::all(); // posts 모델의 모든 레코드를 읽어온다.
+
         // Post 객체의 collection이라는 집합 자료형으로 반환해준다.
         // select * from posts;
+
+        // $posts = Post::orderBy('created_at', 'desc')->get();
+        $posts = Post::orderByDesc('created_at')->get();  // d D 상관없음
+        
+        // $count = Post::count();
+        $count = $posts->count();
         
         // 그렇게 읽어온 레코드들을 뷰페이지에 전달한다.
-        return view('posts.post_list', ['posts' => $posts]);
+        return view('posts.post_list', ['posts' => $posts, 'count' => $count]);
     }
 
     /**
@@ -38,11 +45,17 @@ class PostController extends Controller
         $title = $request->title;
         $content = $request->content;
 
-        $post = new Post;
-        $post->title = $title;
-        $post->content = $content;
-        $post->user_id = 2; // 사용자 로그인 기능 추가될 때까지는 하드코딩
-        $post->save();
+        // $post = new Post;
+        // $post->title = $title;
+        // $post->content = $content;
+        // $post->user_id = 2; // 사용자 로그인 기능 추가될 때까지는 하드코딩
+        // $post->save();
+
+        // Post::create(['title' => $title, 'content' => $content, 'user_id' => 2]);
+
+        $request->merge(['user_id' => 2]);
+        Post::create($request->all());
+        // dd($request->all());
 
         return redirect('/posts');
     }
@@ -54,7 +67,23 @@ class PostController extends Controller
     {
         // DB의 posts 테이블에서 id 칼럼값으로 $id 값을 가지는 레코드를 읽어온다.
         // 읽어온 레코드를 블레이드 뷰 파일에 전달한다.
-        $post = Post::find($id); // select * from posts where id = $id;
+
+        // $post = Post::find($id); // select * from posts where id = $id;
+        // $post = Post::where('id', $id)->first();
+        // $post = Post::firstWhere('id', $id);
+
+        $post = Post::findOrFail($id);
+        
+        // dd($post); // die & dump, 디버깅 함수
+        // dd($post->title);
+
+        // Post::where('id', '>', $id)->get(); select * from posts where id > $id; // 연산자를 생략하면 =
+        // select * from posts where id >= $id and name = '홍길동';
+        // Post::where('id', '>', $id)->where('name', '홍길동')->get();
+
+        // select * from posts where id > $id or name = '홍길동';
+        // Post::where('id', '>', $id)->orWhere('name', '홍길동')->get();
+
         return view('posts.show_post', ['post' => $post]);
     }
 
@@ -78,13 +107,18 @@ class PostController extends Controller
         // DB의 posts 테이블에서 id 칼럼의 값이 $id인 레코드를 찾아서
         // 사용자가 입력한 title, content로 변경해준다.
         // update posts set title =?, content =? where id = $id;
-        $post = Post::find($id);
-        $post->title = $request->title;
-        $post->content = $request->content; // $request->input("content")
-        $post->save();
+        // $post = Post::find($id); // select * from posts where id = $id;
+        // $post->title = $request->title;
+        // $post->content = $request->content; // $request->input("content")
+        // $post->save(); // update posts set title =?, content =? where id = $id;
+
+        Post::where('id', $id)->update(['title' => $request->title, 'content' => $request->content]);
+        // update는 모델 클래스의 화이트 리스트와 블랙 리스트를 참조하지 않는다!!!!
+        // 연관 배열에 있는 모든 키를 변경할 칼럼이름으로 간주하고 update문을 생성해 실행한다.
+        // Post::where('id', $id)->update([$request->all()]); (x)
 
         // 상세보기 페이지로 리다이렉트 한다.
-        return redirect('/posts/'.$post->id);
+        return redirect('/posts/'.$id);
     }
 
     /**
@@ -92,6 +126,14 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // DB의 posts 테이블에서 id 칼럼의 값이 $id인 레코드를 찾아서 삭제한다.
+        // Post::find($id)->delete(); // select * from posts where id = $id;
+        // Post::where('id', $id)->delete();
+        // Post::destroy($id); // delete from posts where id = $id;
+        // Post::where('id', $id)->delete(
+        Post::destroy($id); // delete from posts where id = $id;
+
+        // posts 리스트 보기 뷰로 리다이렉트
+        return redirect('/posts/');
     }
 }
