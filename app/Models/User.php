@@ -47,4 +47,12 @@ class User extends Authenticatable
         // return $this->hasOne(Phone::class, "user_id", "id");
         return $this->hasOne(Phone::class);
     }
+
+    public function comments() {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function posts() {
+        return $this->hasMany(Post::class);
+    }
 }

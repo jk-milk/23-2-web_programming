@@ -15,4 +15,13 @@ class Post extends Model
     protected $fillable = ['title', 'content', 'user_id']; // 화이트 리스트
 
     // protected $guarded = ['created_at', 'updated_at']; // 블랙 리스트
+
+    public function comments() {
+        // return $this->hasMany(Comment::class, 'post_id', 'id');
+        return $this->hasMany(Comment::class);
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }
