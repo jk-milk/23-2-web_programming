@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -25,3 +26,6 @@ Route::get('/test', [UserController::class, 'test']);
 Route::resource('/users', UserController::class);
 
 Route::resource('/posts', PostController::class);
+
+// 중첩 리소스로 정의. nested resource, 공식문서 참고
+Route::resource('/posts.comments', CommentController::class)->except(['create']);
