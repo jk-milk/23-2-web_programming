@@ -8,22 +8,6 @@ use Illuminate\Http\Request;
 class CommentController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request, string $post_id)
@@ -46,34 +30,31 @@ class CommentController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $post_id, string $comment_id)
     {
-        //
+        // $comment_id에 해당하는 레코드를 comments 테이블에서 인출하고
+        // Comment 모델 객체로 생성한다.
+        // 그 모델 객체의 content를 $request에 있는 content 값으로 변경하고
+        // 그 모델 객체의 save 메서드를 호출한다.
+        $comment = Comment::find($comment_id);
+        $comment->content = $request->content;
+        $comment->save(); // DB에서 해당 레코드가 update된다.
+
+        // 이 댓글의 게시글 상세보기 페이지로 redirection
+        return redirect('/posts/'.$post_id);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $post_id, string $comment_id)
     {
-        //
+        // comments 테이블에서 id 칼럼값이 $comment_id인 레코드를 찾아 삭제.
+        Comment::destroy($comment_id);
+        
+        // 이 댓글의 게시글 상세보기 페이지로 redirection
+        return redirect('/posts/'.$post_id);
     }
 }

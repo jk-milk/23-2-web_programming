@@ -8,6 +8,7 @@
 
     </head>
     <body>
+      <div><a href="/posts/create">게시글 작성하기</a></div>
       <h2>게시글 리스트 {{$count}}개</h2>
       <table>
         <tr>

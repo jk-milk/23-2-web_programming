@@ -28,4 +28,5 @@ Route::resource('/users', UserController::class);
 Route::resource('/posts', PostController::class);
 
 // 중첩 리소스로 정의. nested resource, 공식문서 참고
-Route::resource('/posts.comments', CommentController::class)->except(['create']);
+// Route::resource('/posts.comments', CommentController::class)->except(['create', 'show', 'index', 'edit']);
+Route::resource('/posts.comments', CommentController::class)->only(['store', 'update', 'destroy']);
