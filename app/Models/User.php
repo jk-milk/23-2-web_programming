@@ -77,6 +77,11 @@ class User extends Authenticatable
     // Role과의 N:M 관계를 정의하는 메서드를 정의하자.
     public function roles(){
         // return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
-        return $this->belongsToMany(Role::class)->withPivot(['created_at', 'updated_at', 'active']);
+        // return $this->belongsToMany(Role::class)->withPivot(['created_at', 'updated_at', 'active']);
+        return $this->belongsToMany(Role::class)->withTimestamps()->withPivot(['active']);
+    }
+
+    public function goods() {
+        return $this->belongsToMany(Goods::class)->withPivot(['ordered_date', 'amount']);
     }
 }
