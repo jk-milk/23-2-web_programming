@@ -16,6 +16,8 @@ class Post extends Model
 
     // protected $guarded = ['created_at', 'updated_at']; // 블랙 리스트
 
+    // protected $with = ['ratings']; // Post 모델은 기본으로 연계된 Ratings를 함께 즉시 적재한다.
+
     public function comments() {
         // return $this->hasMany(Comment::class, 'post_id', 'id');
         return $this->hasMany(Comment::class);
