@@ -10,7 +10,7 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $req)
     {
         // 리스트를 보여주는 기능을 수행
         // DB의 posts 테이블의 레코드들을 읽어온다.
@@ -20,13 +20,25 @@ class PostController extends Controller
         // select * from posts;
 
         // $posts = Post::orderBy('created_at', 'desc')->get();
-        $posts = Post::orderByDesc('created_at')->get();  // d D 상관없음
-        
+        // $posts = Post::orderByDesc('created_at')->get();  // d D 상관없음
+
+        $keyword = $req->keyword;
+        if (isset($keyword)) {
+            $posts = Post::where('content', 'like', '%'.$keyword.'%')
+                            ->orWhere('title', 'like', '%'.$keyword.'%')
+                            ->paginate(5)->withQueryString();
+        }
+        else $posts = Post::paginate(5); // 한 페이지에 5개 레코드씩 표시
+        // $posts = Post::simplePaginate(5);
+        // dd($posts);
+
         // $count = Post::count();
-        $count = $posts->count();
+        // $count = $posts->count();
         
         // 그렇게 읽어온 레코드들을 뷰페이지에 전달한다.
-        return view('posts.post_list', ['posts' => $posts, 'count' => $count]);
+        // return view('posts.post_list', ['posts' => $posts, 'count' => $count]);
+        return view('posts.post_list', ['posts' => $posts]);
+
     }
 
     /**
